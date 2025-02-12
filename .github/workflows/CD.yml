@@ -8,25 +8,10 @@ on:
 jobs:  
   deploy:  
     runs-on: ubuntu-latest  
-
     steps:  
-    - name: Checkout code  
-      uses: actions/checkout@v2  
-
-    - name: Set up Python  
-      uses: actions/setup-python@v2  
-      with:  
-        python-version: '3.10'  
-
-    - name: Install dependencies  
-      run: | 
-        python -m pip install --upgrade pip 
-        pip install -r requirements.txt  
-
-    - name: Deploy to PythonAnywhere  
-      env:  
-        PA_API_TOKEN: ${{ secrets.PA_API_TOKEN }}  
-      run: |  
-        curl -X POST https://www.pythonanywhere.com/api/v0/user/Dukpe/webapp/Dukpe/ \
-          --header "Authorization: Token $PA_API_TOKEN" 
-          
+      - name: Check out the repo  
+        uses: actions/checkout@v2  
+      - name: Deploy to EC2  
+        run: ssh -i ${{ secrets.EC2_KEY }} ubuntu@54.210.215.74 'cd /home/ubuntu/hngx-stage2-fastapi-book-project && git pull && nohup uvicorn main:app
+        env:  
+          EC2_KEY: ${{ secrets.EC2_KEY }} 
