@@ -83,13 +83,16 @@ Now, visit http://127.0.0.1:8000/docs to see the API documentation.
 - ReDoc: http://localhost:8000/redoc
 
 ## API Endpoints
-1. Get book by id
+## 1. Get book by id
 
-### Endpoint: `GET /api/v1/books/{book_id}`
-### Response: `200 OK`: Returns book details in JSON format.
+Endpoint: `GET /api/v1/books/{book_id}`
+
+Use: `https://ewe-promoted-indirectly.ngrok-free.app/docs`
+
+Response: `200 OK`: Returns book details in JSON format.
               `404 Not Found`: If the book does not exist.
 
-###Example
+Example
 ```json
 {
     "id": 1,
