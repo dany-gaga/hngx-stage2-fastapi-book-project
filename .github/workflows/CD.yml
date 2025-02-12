@@ -16,7 +16,7 @@ jobs:
         ssh -i ${{ secrets.EC2_KEY }} ubuntu@54.210.215.74 "
         cd /home/ubuntu/hngx-stage2-fastapi-book-project && 
         git pull && 
-        nohup uvicorn main:app -host 127.0.0.1 --port 8000 & 
+        nohup uvicorn main:app --host 127.0.0.1 --port 8000 & 
         nohup ngrok http --domain=ewe-promoted-indirectly.ngrok-free.app 8000 &
         "
         env:  
