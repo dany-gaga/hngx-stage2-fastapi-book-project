@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a RESTful API built with FastAPI for managing a book collection. It provides comprehensive CRUD (Create, Read, Update, Delete) operations for books with proper error handling, input validation, and documentation.
+This project is a FastAPI-based Book API that allows users to retrieve book details by ID. It includes CI/CD automation using GitHub Actions and is deployed with Nginx as a reverse proxy.
 
 ## Features
 
@@ -16,7 +16,7 @@ This project is a RESTful API built with FastAPI for managing a book collection.
 ## Project Structure
 
 ```
-fastapi-book-project/
+hngx-stage2-fastapi-book-project/
 ├── api/
 │   ├── db/
 │   │   ├── __init__.py
@@ -32,6 +32,7 @@ fastapi-book-project/
 │   ├── __init__.py
 │   └── test_books.py       # API endpoint tests
 ├── main.py                 # Application entry point
+├── nginx.conf              # Nginx configuration for reverse proxy   
 ├── requirements.txt        # Project dependencies
 └── README.md
 ```
@@ -43,14 +44,15 @@ fastapi-book-project/
 - Pydantic
 - pytest
 - uvicorn
+- ngork
 
-## Installation
+## Setup & Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/hng12-devbotops/fastapi-book-project.git
-cd fastapi-book-project
+git clone [[https://github.com/YOUR_USERNAME/fastapi-book-project.git](https://github.com/dany-gaga/hngx-stage2-fastapi-book-project/tree/main)](https://github.com/dany-gaga/hngx-stage2-fastapi-book-project)
+cd hngx-stage2-fastapi-book-project
 ```
 
 2. Create a virtual environment:
@@ -66,13 +68,14 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Running the Application
+## Running the Application locally
 
 1. Start the server:
 
 ```bash
 uvicorn main:app
 ```
+Now, visit http://127.0.0.1:8000/docs to see the API documentation.
 
 2. Access the API documentation:
 
@@ -80,6 +83,72 @@ uvicorn main:app
 - ReDoc: http://localhost:8000/redoc
 
 ## API Endpoints
+1. Get book by id
+
+###Endpoint: `GET /api/v1/books/{book_id}`
+###Response: `200 OK`: Returns book details in JSON format.
+              `404 Not Found`: If the book does not exist.
+
+###Example
+```json
+{
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald"
+}
+```
+
+⚙️ CI/CD Pipeline
+
+✅ CI Pipeline (Testing on PRs)
+
+- Runs `pytest` on pull requests to `main`.
+- Fails if tests fail.
+- Succeeds if all tests pass.
+
+🚀 CD Pipeline (Deployment on Merge to main)
+
+Pulls the latest changes on EC2.
+
+Restarts Uvicorn service.
+
+Ensures the API is running via Nginx.
+
+
+🌍 Deployment
+
+1️⃣ Configure Nginx as a Reverse Proxy
+
+Update the Nginx configuration file:
+
+```json
+server {  
+    listen 80;  
+    server_name 54.210.215.74;  # Using the public IP 
+
+    location / {  
+        proxy_pass http://127.0.0.1:8000;  # Ensure Uvicorn is running here  
+        proxy_http_version 1.1;  
+        proxy_set_header Upgrade $http_upgrade;  
+        proxy_set_header Connection 'upgrade';  
+        proxy_set_header Host $host;  
+        proxy_cache_bypass $http_upgrade;  
+    }  
+} 
+```
+Restart Nginx:
+
+```bash
+sudo systemctl restart nginx
+```
+Start Uvicorn and ngrok as a Service
+
+```bash
+sudo systemctl status uvicorn
+```
+```bash
+sudo systemctl status ngrok
+```
 
 ### Books
 
