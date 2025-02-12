@@ -1,0 +1,33 @@
+name: Continuous-Deployment  
+
+on:  
+  push:  
+    branches:  
+      - main  
+
+jobs:  
+  deploy:  
+    runs-on: ubuntu-latest  
+
+    steps:  
+    - name: Checkout code  
+      uses: actions/checkout@v2  
+
+    - name: Set up Python  
+      uses: actions/setup-python@v2  
+      with:  
+        python-version: '3.x'  
+
+    - name: Install dependencies  
+      run: |  
+        pip install -r requirements.txt  
+
+    - name: Deploy to PythonAnywhere  
+      env:  
+        PA_API_TOKEN: ${{ secrets.PA_API_TOKEN }}  
+      run: |  
+        curl -s --request POST \
+          --data "username=Dukpe" \
+          --data "api_token=${PA_API_TOKEN}" \
+          https://www.pythonanywhere.com/api/v0/user/Dukpe/webapp/Dukpe/reload/
+          
