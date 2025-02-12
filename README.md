@@ -85,8 +85,8 @@ Now, visit http://127.0.0.1:8000/docs to see the API documentation.
 ## API Endpoints
 1. Get book by id
 
-###Endpoint: `GET /api/v1/books/{book_id}`
-###Response: `200 OK`: Returns book details in JSON format.
+### Endpoint: `GET /api/v1/books/{book_id}`
+### Response: `200 OK`: Returns book details in JSON format.
               `404 Not Found`: If the book does not exist.
 
 ###Example
@@ -122,7 +122,7 @@ Ensures the API is running via Nginx.
 Update the Nginx configuration file:
 
 ```json
-server {  
+{  
     listen 80;  
     server_name 54.210.215.74;  # Using the public IP 
 
