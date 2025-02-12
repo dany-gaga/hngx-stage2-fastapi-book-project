@@ -16,18 +16,17 @@ jobs:
     - name: Set up Python  
       uses: actions/setup-python@v2  
       with:  
-        python-version: '3.x'  
+        python-version: '3.10'  
 
     - name: Install dependencies  
-      run: |  
+      run: | 
+        python -m pip install --upgrade pip 
         pip install -r requirements.txt  
 
     - name: Deploy to PythonAnywhere  
       env:  
         PA_API_TOKEN: ${{ secrets.PA_API_TOKEN }}  
       run: |  
-        curl -s --request POST \
-          --data "username=Dukpe" \
-          --data "api_token=${PA_API_TOKEN}" \
-          https://www.pythonanywhere.com/api/v0/user/Dukpe/webapp/Dukpe/reload/
+        curl -X POST https://www.pythonanywhere.com/api/v0/user/Dukpe/webapp/Dukpe/ \
+          --header "Authorization: Token $PA_API_TOKEN" 
           
