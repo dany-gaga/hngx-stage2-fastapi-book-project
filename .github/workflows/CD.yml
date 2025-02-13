@@ -4,21 +4,21 @@ on:
   push:  
     branches:  
       - main  
-jobs:  
-  deploy:  
-    runs-on: ubuntu-latest  
-    steps:  
-      - name: Deploy to EC2  
-        uses: appleboy/ssh-action@master  
-        with:  
-          host: 54.210.215.74  
-          username: ubuntu  
-          key: ${{ secrets.EC2_KEY }}  # Your EC2 SSH private key  
-          script: |  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: | 
             cd /home/ubuntu/hngx-stage2-fastapi-book-project  
             git pull origin main  
             source venv/bin/activate  
-            pip install -r requirements.txt  
-            sudo systemctl restart nginx
-            sudo systemctl restart uvicorn   
+            pip install -r requirements.txt 
+            sudo systemctl restart fastapi   
             sudo systemctl restart ngrok
+            sudo systemctl restart nginx
