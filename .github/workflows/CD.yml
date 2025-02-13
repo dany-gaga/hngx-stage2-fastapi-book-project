@@ -14,7 +14,6 @@ jobs:
           host: ${{ secrets.IP }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          port: 8000
           script: | 
             cd /home/ubuntu/hngx-stage2-fastapi-book-project  
             git pull origin main  
